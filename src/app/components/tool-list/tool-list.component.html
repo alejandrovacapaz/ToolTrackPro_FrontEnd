@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Tool List</h2>
+  <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+</div>
+
+<table border="1" style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>      
+      <th>Name</th>
+      <th>Description</th>
+      <th>User</th>
+      <th>Email</th>
+      <th>Borrowed At</th>
+      <th>Returned At</th>
+      <th>Available</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tool of tools$ | async">      
+      <td>{{ tool.toolName }}</td>
+      <td>{{ tool.description }}</td>
+      <td>{{ tool.userName || '-' }}</td>
+      <td>{{ tool.userEmail || '-' }}</td>
+      <td>{{ tool.borrowDate ? (tool.borrowDate | date:'short') : '-' }}</td>
+      <td>{{ tool.returnDate ? (tool.returnDate | date:'short') : '-' }}</td>
+      <td>{{ tool.isAvailable ? 'Yes' : 'No' }}</td>
+      <td>
+        <button class="btn btn-success" (click)="openBorrowModal(tool)" [disabled]="!tool.isAvailable">Borrow</button>
+        <button class="btn btn-info" (click)="returnTool(tool)" [disabled]="tool.isAvailable || !isReturnEnabledForUser(tool.userEmail)">Return</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-center gap-3 mt-4">
+  <button class="btn btn-primary" (click)="openAddToolModal()">Add Tool</button>
+  <button class="btn btn-warning" (click)="sendOverdueNotifications()">Send Overdue Notifications</button>
+</div>
+
+<borrow-tool-modal
+  *ngIf="isModalOpen"
+  [toolName]="selectedTool?.toolName"
+  [description]="selectedTool?.description"
+  [estimatedReturnDate]="estimatedReturnDate"
+  (confirmed)="onBorrowModalConfirmed($event)"
+  (closed)="onBorrowModalClosed()">
+</borrow-tool-modal>
+
+<add-tool-modal
+  *ngIf="isAddModalOpen"
+  (confirmed)="onToolAdded($event)"
+  (closed)="onAddToolModalClosed()">
+</add-tool-modal>
+  

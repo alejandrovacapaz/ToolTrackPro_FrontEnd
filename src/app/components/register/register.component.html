@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Register</h2>
+  <button class="btn btn-outline-danger" (click)="backToLogin()">Back To Login</button>
+</div>
+
+<div class="container mt-4">    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control w-50" id="name" formControlName="name">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control w-25" id="email" formControlName="email">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control w-25" id="password" formControlName="password">
+      </div>
+      <div class="d-flex gap-2 mt-3">
+        <button type="button" class="btn btn-secondary" (click)="clear()">Clear</button>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>     
+    </form>    
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>    
+</div>
+  

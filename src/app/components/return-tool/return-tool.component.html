@@ -1,0 +1,16 @@
+<div class="container mt-4">
+    <h2>Return Tool</h2>
+    <form [formGroup]="returnForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="toolId" class="form-label">Tool ID</label>
+        <input type="text" class="form-control" id="toolId" formControlName="toolId">
+      </div>
+      <div class="mb-3">
+        <label for="userId" class="form-label">User ID</label>
+        <input type="text" class="form-control" id="userId" formControlName="userId">
+      </div>
+      <button type="submit" class="btn btn-primary">Return</button>
+    </form>
+    <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+  </div>
+  
