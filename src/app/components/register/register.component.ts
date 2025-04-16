@@ -23,7 +23,9 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    this.authService.register(this.registerForm.value).subscribe({
+    if (!this.validations())
+      return;    
+    this.authService.register(this.registerForm.value).subscribe({      
       next: (res) => {
         alert('Registration successful!');
         this.clear();
@@ -44,5 +46,23 @@ export class RegisterComponent {
   backToLogin() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  validations(): boolean {
+    const name = this.registerForm.get('name')?.value?.trim();
+    const email = this.registerForm.get('email')?.value?.trim();
+    const password = this.registerForm.get('password')?.value?.trim();
+  
+    if (!name || !email || !password) {
+      alert("All fields are required");
+      return false;
+    }
+
+    if (this.registerForm.get('email')?.errors?.['email']){
+      alert("Invalid Email format");
+      return false;
+    }
+
+    return true;
   }
 }

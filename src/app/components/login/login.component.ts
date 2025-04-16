@@ -22,6 +22,9 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+    if (!this.validations())
+      return;
+     
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         this.authService.setToken(res.token);
@@ -34,5 +37,22 @@ export class LoginComponent {
         this.errorMessage = 'Login failed. Please try again, ' + error;
       }
     });
+  }
+
+  validations(): boolean {   
+    const email = this.loginForm.get('email')?.value?.trim();
+    const password = this.loginForm.get('password')?.value?.trim();
+  
+    if (!email || !password) {
+      alert("All fields are required");
+      return false;
+    }
+
+    if (this.loginForm.get('email')?.errors?.['email']){
+      alert("Invalid Email format");
+      return false;
+    }
+
+    return true;
   }
 }
